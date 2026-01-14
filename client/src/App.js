@@ -1,4 +1,4 @@
-// client/src/App.js
+// src/App.js
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -10,15 +10,13 @@ import Products from "./pages/Products";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 
-import "./styles/index.css";
-
 function App() {
   return (
     <ThemeProvider>
       <CartProvider>
         <Router>
-          <Navbar />
-          <div className="app-container">
+          <div className="App">
+            <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
