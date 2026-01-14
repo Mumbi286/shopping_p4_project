@@ -1,11 +1,10 @@
-/* client/src/styles/Products.css */
+/* src/styles/Products.css */
 .products-page {
   padding: 20px;
 }
 
-.product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  justify-content: center;
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
 }

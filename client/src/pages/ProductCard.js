@@ -1,7 +1,7 @@
-// client/src/components/ProductCard.js
-import React, { useContext } from 'react';
-import '../styles/ProductCard.css';
-import { CartContext } from '../context/CartContext';
+// src/components/ProductCard.js
+import React, { useContext } from "react";
+import "../styles/ProductCard.css";
+import { CartContext } from "../context/CartContext";
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useContext(CartContext);
