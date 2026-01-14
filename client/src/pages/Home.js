@@ -1,42 +1,32 @@
-// src/pages/Home.js
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CartContext } from "../context/CartContext";
+import { ThemeContext } from "../context/ThemeContext";
+import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
 const Home = () => {
   const { addToCart } = useContext(CartContext);
+  const { theme } = useContext(ThemeContext);
+  const [products, setProducts] = useState([]);
 
-  // Placeholder products (for demo)
-  const products = [
-    {
-      id: 1,
-      title: "Red T-Shirt",
-      price: 19.99,
-      image: "https://via.placeholder.com/150"
-    },
-    {
-      id: 2,
-      title: "Blue Jeans",
-      price: 49.99,
-      image: "https://via.placeholder.com/150"
-    },
-    {
-      id: 3,
-      title: "Sneakers",
-      price: 89.99,
-      image: "https://via.placeholder.com/150"
-    },
-  ];
+  useEffect(() => {
+    fetch("https://fakestoreapi.com/products?limit=6")
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error("Error fetching products:", err));
+  }, []);
 
   return (
-    <div className="home-container">
-      <h1>Welcome to Our Shop</h1>
+    <div className={`home ${theme}`}>
+      <h1>Welcome to Our Store</h1>
       <div className="products-grid">
         {products.map((product) => (
-          <div className="product-card" key={product.id}>
-            <img src={product.image} alt={product.title} />
-            <h3>{product.title}</h3>
-            <p>${product.price.toFixed(2)}</p>
+          <div key={product.id} className="product-card">
+            <Link to={`/products/${product.id}`}>
+              <img src={product.image} alt={product.title} className="product-image"/>
+              <h3>{product.title}</h3>
+            </Link>
+            <p>${product.price}</p>
             <button onClick={() => addToCart(product)}>Add to Cart</button>
           </div>
         ))}
