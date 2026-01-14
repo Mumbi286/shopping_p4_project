@@ -1,20 +1,10 @@
-.products-grid,
-.home-container .products-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+/* src/styles/Home.css */
+.home-page {
+  padding: 20px;
 }
 
-.product-card {
-  padding: 15px;
-  border-radius: 8px;
-  min-width: 200px;
-  text-align: center;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-}
-
-.product-card button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  cursor: pointer;
+.home-products-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
 }

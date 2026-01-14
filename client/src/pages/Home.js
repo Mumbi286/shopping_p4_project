@@ -1,34 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
-import { CartContext } from "../context/CartContext";
-import { ThemeContext } from "../context/ThemeContext";
-import { Link } from "react-router-dom";
+// src/pages/Home.js
+import React from "react";
+import ProductCard from "../components/ProductCard";
 import "../styles/Home.css";
 
+// Mock products for now (same as Products page)
+const products = [
+  { id: 1, name: "Product A", price: 29.99, image: "/images/productA.jpg" },
+  { id: 2, name: "Product B", price: 49.99, image: "/images/productB.jpg" },
+  { id: 3, name: "Product C", price: 19.99, image: "/images/productC.jpg" },
+  { id: 4, name: "Product D", price: 99.99, image: "/images/productD.jpg" },
+];
+
 const Home = () => {
-  const { addToCart } = useContext(CartContext);
-  const { theme } = useContext(ThemeContext);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products?limit=6")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error fetching products:", err));
-  }, []);
-
   return (
-    <div className={`home ${theme}`}>
-      <h1>Welcome to Our Store</h1>
-      <div className="products-grid">
+    <div className="home-page">
+      <h2>Featured Products</h2>
+      <div className="home-products-container">
         {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <Link to={`/products/${product.id}`}>
-              <img src={product.image} alt={product.title} className="product-image"/>
-              <h3>{product.title}</h3>
-            </Link>
-            <p>${product.price}</p>
-            <button onClick={() => addToCart(product)}>Add to Cart</button>
-          </div>
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
