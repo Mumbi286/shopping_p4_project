@@ -1,4 +1,4 @@
-from fastapi import fastAPI,depends,HTTPException,query
+from fastapi import fastAPI,depends
 from sqlalchemy.import(
     create_engine,Column,Integer,String,
     Boolean,ForeignKey,DateTime,Decimal, Text
