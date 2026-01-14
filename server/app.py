@@ -133,7 +133,7 @@ def view_cart(user_id: int, db: Session = Depends(get_db)):
             product_id=ci.product.id,
             title=ci.product.title,
             price=float(ci.product.price),
-            quantity=ci.quantity
+            
         ))
     return items
 
