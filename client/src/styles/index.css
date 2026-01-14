@@ -1,0 +1,12 @@
+/* client/src/styles/index.css */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.app-container {
+  padding: 20px;
+}
