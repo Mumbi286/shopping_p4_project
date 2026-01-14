@@ -1,30 +1,28 @@
+// src/components/Navbar.js
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
+import { CartContext } from "../context/CartContext";
 import "../styles/Navbar.css";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const { cart } = useContext(CartContext);
 
   return (
-    <nav
-      style={{ backgroundColor: theme.navBackground, color: theme.navText }}
-      className="navbar"
-    >
-      <h1 className="navbar-logo">ShopCart</h1>
-      <div className="navbar-links">
-        <a href="/" style={{ color: theme.navText }}>Home</a>
-        <a href="/products" style={{ color: theme.navText }}>Products</a>
-        <a href="/cart" style={{ color: theme.navText }}>Cart</a>
-        <button
-          onClick={toggleTheme}
-          style={{
-            backgroundColor: theme.buttonBackground,
-            color: theme.buttonText,
-          }}
-        >
-          Toggle Theme
-        </button>
+    <nav className={`navbar ${theme}`}>
+      <div className="navbar-left">
+        <h1>Shopping App</h1>
       </div>
+      <div className="navbar-links">
+        <Link to="/">Home</Link>
+        <Link to="/products">Products</Link>
+        <Link to="/cart">Cart ({cart.length})</Link>
+        <Link to="/checkout">Checkout</Link>
+      </div>
+      <button onClick={toggleTheme} className="theme-toggle">
+        {theme === "light" ? "Dark Mode" : "Light Mode"}
+      </button>
     </nav>
   );
 };

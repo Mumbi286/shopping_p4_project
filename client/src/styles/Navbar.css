@@ -1,20 +1,30 @@
+/* src/styles/Navbar.css */
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 15px 20px;
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+}
+
+.navbar.light {
+  --navbar-bg: #f8f8f8;
+  --navbar-text: #333;
+}
+
+.navbar.dark {
+  --navbar-bg: #222;
+  --navbar-text: #fff;
 }
 
 .navbar-links a {
   margin-right: 15px;
   text-decoration: none;
-  font-weight: bold;
+  color: inherit;
 }
 
-.navbar-links button {
+.theme-toggle {
   padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
   cursor: pointer;
 }
