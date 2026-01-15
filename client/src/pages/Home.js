@@ -1,22 +1,20 @@
-// src/pages/Home.js
-import React from "react";
-import ProductCard from "../components/ProductCard";
-import "../styles/Home.css";
+import React from 'react';
+import ProductCard from '../components/ProductCard';
+import './Home.css';
 
-// Mock products for now (same as Products page)
-const products = [
-  { id: 1, name: "Product A", price: 29.99, image: "/images/productA.jpg" },
-  { id: 2, name: "Product B", price: 49.99, image: "/images/productB.jpg" },
-  { id: 3, name: "Product C", price: 19.99, image: "/images/productC.jpg" },
-  { id: 4, name: "Product D", price: 99.99, image: "/images/productD.jpg" },
+// Sample placeholder products for now
+const sampleProducts = [
+  { id: 1, name: 'Sample Product 1', price: 29.99, image: 'https://via.placeholder.com/150' },
+  { id: 2, name: 'Sample Product 2', price: 49.99, image: 'https://via.placeholder.com/150' },
+  { id: 3, name: 'Sample Product 3', price: 19.99, image: 'https://via.placeholder.com/150' },
 ];
 
 const Home = () => {
   return (
-    <div className="home-page">
+    <div className="home-container">
       <h2>Featured Products</h2>
-      <div className="home-products-container">
-        {products.map((product) => (
+      <div className="products-grid">
+        {sampleProducts.map(product => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
