@@ -1,17 +1,39 @@
-export default function Checkout() {
+// client/src/pages/Checkout.js
+import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
+
+const Checkout = () => {
+  const [form, setForm] = useState({ name: "", address: "", card: "" });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    alert("Payment simulated. Thank you for your order!");
+  };
+
   return (
-    <div className="container mt-4">
-      <h2>Checkout</h2>
-
-      <form>
-        <input className="form-control mb-2" placeholder="Name" />
-        <input className="form-control mb-2" placeholder="Address" />
-        <input className="form-control mb-2" placeholder="Card Number" />
-
-        <button className="btn btn-primary w-100">
-          Place Order
-        </button>
-      </form>
+    <div>
+      <h1>Checkout</h1>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control name="name" value={form.name} onChange={handleChange} required />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Address</Form.Label>
+          <Form.Control name="address" value={form.address} onChange={handleChange} required />
+        </Form.Group>
+        <Form.Group className="mb-3">
+          <Form.Label>Card Number</Form.Label>
+          <Form.Control name="card" value={form.card} onChange={handleChange} required />
+        </Form.Group>
+        <Button type="submit" variant="success">Pay</Button>
+      </Form>
     </div>
   );
-}
+};
+
+export default Checkout;

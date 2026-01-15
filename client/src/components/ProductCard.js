@@ -1,31 +1,33 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import PropTypes from "prop-types";
+// Removed old CSS import since we're using Bootstrap
+// import "./ProductCard.css";
 
-export default function ProductCard({ product, addToCart }) {
+const ProductCard = ({ product, children }) => {
   return (
     <div className="card h-100">
       <img
-        src={product.image || "https://via.placeholder.com/300"}
+        src={product.image}
         className="card-img-top"
         alt={product.name}
+        style={{ height: "200px", objectFit: "cover" }}
       />
       <div className="card-body d-flex flex-column">
-        <h5>{product.name}</h5>
-        <p>${product.price}</p>
-
-        <Link
-          to={`/product/${product.id}`}
-          className="btn btn-outline-primary mb-2"
-        >
-          View
-        </Link>
-
-        <button
-          className="btn btn-success mt-auto"
-          onClick={() => addToCart(product)}
-        >
-          Add to Cart
-        </button>
+        <h5 className="card-title">{product.name}</h5>
+        <p className="card-text">${product.price.toFixed(2)}</p>
+        <div className="mt-auto">{children}</div>
       </div>
     </div>
   );
-}
+};
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    image: PropTypes.string.isRequired,
+  }).isRequired,
+  children: PropTypes.node,
+};
+
+export default ProductCard;

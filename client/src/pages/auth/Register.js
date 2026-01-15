@@ -1,43 +1,36 @@
-import { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+// src/pages/auth/Register.js
+import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Register() {
-  const [email, setEmail] = useState("");
-  const { register } = useContext(AuthContext);
+function Register() {
+  const [username, setUsername] = useState("");
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    register(email);
+    login(username); // simple register => login
     navigate("/");
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "400px" }}>
-      <h3 className="mb-3 text-center">Register</h3>
-
+    <div className="container mt-4">
+      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          className="form-control mb-3"
-          placeholder="Email"
-          required
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          className="form-control mb-3"
-          placeholder="Password"
-          required
-        />
-
-        <button className="btn btn-success w-100">
-          Register
-        </button>
+        <div className="mb-3">
+          <label>Username</label>
+          <input
+            type="text"
+            className="form-control"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </div>
+        <button className="btn btn-success">Register</button>
       </form>
     </div>
   );
 }
+
+export default Register;

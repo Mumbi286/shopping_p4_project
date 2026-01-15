@@ -1,26 +1,37 @@
-import ProductCard from "../components/ProductCard";
-import { useContext } from "react";
-import { CartContext } from "../context/CartContext";
+// client/src/pages/Products.js
+import React from "react";
+import { Link } from "react-router-dom";
+import { Button, Card, Row, Col } from "react-bootstrap";
+import { useCart } from "../context/CartContext";
 
-export default function Products() {
-  const { addToCart } = useContext(CartContext);
+const products = [
+  { id: 1, name: "Product 1", price: 50 },
+  { id: 2, name: "Product 2", price: 80 },
+  { id: 3, name: "Product 3", price: 120 }
+];
 
-  const products = Array.from({ length: 6 }).map((_, i) => ({
-    id: i + 10,
-    name: `Product ${i + 1}`,
-    price: 50 + i * 10
-  }));
+const Products = () => {
+  const { addToCart } = useCart();
 
   return (
-    <div className="container mt-4">
-      <h2>All Products</h2>
-      <div className="row">
+    <div>
+      <h1>Products</h1>
+      <Row>
         {products.map(p => (
-          <div className="col-md-4 mb-3" key={p.id}>
-            <ProductCard product={p} addToCart={addToCart} />
-          </div>
+          <Col key={p.id} md={4} className="mb-4">
+            <Card>
+              <Card.Body>
+                <Card.Title>{p.name}</Card.Title>
+                <Card.Text>${p.price}</Card.Text>
+                <Button variant="success" onClick={() => addToCart(p)}>Add to Cart</Button>{" "}
+                <Button as={Link} to={`/products/${p.id}`} variant="primary">View</Button>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
+      </Row>
     </div>
   );
-}
+};
+
+export default Products;
