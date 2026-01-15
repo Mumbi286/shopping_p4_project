@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.orm import Session
 from starlette import status
-
 from models import Cart, CartItem, Product 
 from database import SessionLocal
+from routers.auth import get_current_user
  
 
 
@@ -14,13 +14,14 @@ router = APIRouter(
 )
 
 
-# DATABASE DEPENDENCY
+# database dependecies
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
 
 
 
@@ -40,7 +41,7 @@ class UpdateCartItemRequest(BaseModel):
 # routes
 
 @router.get("/", status_code=status.HTTP_200_OK)
-def get_cart():
+def get_cart(db: Session = Depends(get_db), user: dict = Depends(get_current_user)):
     
     # Get all items in the logged-in user's cart
 
@@ -62,7 +63,7 @@ def get_cart():
 
 
 @router.post("/add", status_code=status.HTTP_201_CREATED)
-def add_to_cart(request: AddCartItemRequest):
+def add_to_cart(request: AddCartItemRequest, db: Session = Depends(get_db),user: dict = Depends(get_current_user)):
     
     # Add a product to the user's cart
     # Get or create cart
@@ -100,7 +101,9 @@ def add_to_cart(request: AddCartItemRequest):
 @router.put("/update/{item_id}", status_code=status.HTTP_200_OK)
 def update_cart_item(
     item_id: int = Path(gt=0),
-    request: UpdateCartItemRequest = None
+    request: UpdateCartItemRequest = None,
+    db: Session = Depends(get_db),
+    user: dict = Depends(get_current_user)
 ):
     
     # Update quantity of a cart item
@@ -122,7 +125,7 @@ def update_cart_item(
 
 
 @router.delete("/remove/{item_id}", status_code=status.HTTP_200_OK)
-def remove_cart_item(item_id: int = Path(gt=0)):
+def remove_cart_item(item_id: int = Path(gt=0),db: Session = Depends(get_db),user: dict = Depends(get_current_user)):
     
     # Remove a cart item
     cart_item = (
