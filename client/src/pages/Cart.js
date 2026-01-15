@@ -1,43 +1,35 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import "../styles/Cart.css";
+import { Link } from "react-router-dom";
 
-const Cart = () => {
-  const {
-    cartItems,
-    increaseQuantity,
-    decreaseQuantity,
-    removeFromCart,
-  } = useContext(CartContext);
-
-  const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-
-  if (cartItems.length === 0) return <h2>Your cart is empty.</h2>;
+export default function Cart() {
+  const { cartItems, removeFromCart } = useContext(CartContext);
 
   return (
-    <div className="cart-container">
-      <h2>Your Shopping Cart</h2>
-      {cartItems.map((item) => (
-        <div className="cart-item" key={item.id}>
-          <img src={item.image_url} alt={item.title} />
-          <div className="cart-item-info">
-            <h3>{item.title}</h3>
-            <p>Price: ${item.price.toFixed(2)}</p>
-            <div className="quantity-control">
-              <button onClick={() => decreaseQuantity(item.id)}>-</button>
-              <span>{item.quantity}</span>
-              <button onClick={() => increaseQuantity(item.id)}>+</button>
-            </div>
-            <button onClick={() => removeFromCart(item.id)}>Remove</button>
+    <div className="container mt-4">
+      <h2>Your Cart</h2>
+
+      {cartItems.length === 0 && <p>No items in cart.</p>}
+
+      {cartItems.map(item => (
+        <div className="card mb-2 p-2" key={item.id}>
+          <div className="d-flex justify-content-between">
+            <span>{item.name}</span>
+            <button
+              className="btn btn-danger btn-sm"
+              onClick={() => removeFromCart(item.id)}
+            >
+              Remove
+            </button>
           </div>
         </div>
       ))}
-      <h3>Total: ${totalPrice.toFixed(2)}</h3>
+
+      {cartItems.length > 0 && (
+        <Link to="/checkout" className="btn btn-success mt-3">
+          Checkout
+        </Link>
+      )}
     </div>
   );
-};
-
-export default Cart;
+}

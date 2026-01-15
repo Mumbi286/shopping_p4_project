@@ -1,32 +1,20 @@
-import React, { useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
-import "../styles/Navbar.css";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
 
-const Navbar = () => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+export default function Navbar() {
+  const { cartItems } = useContext(CartContext);
 
   return (
-    <nav
-      style={{ backgroundColor: theme.navBackground, color: theme.navText }}
-      className="navbar"
-    >
-      <h1 className="navbar-logo">ShopCart</h1>
-      <div className="navbar-links">
-        <a href="/" style={{ color: theme.navText }}>Home</a>
-        <a href="/products" style={{ color: theme.navText }}>Products</a>
-        <a href="/cart" style={{ color: theme.navText }}>Cart</a>
-        <button
-          onClick={toggleTheme}
-          style={{
-            backgroundColor: theme.buttonBackground,
-            color: theme.buttonText,
-          }}
-        >
-          Toggle Theme
-        </button>
+    <nav className="navbar navbar-dark bg-dark px-4">
+      <Link className="navbar-brand" to="/">Shop</Link>
+
+      <div>
+        <Link className="btn btn-outline-light me-2" to="/products">Products</Link>
+        <Link className="btn btn-outline-warning" to="/cart">
+          Cart ({cartItems.length})
+        </Link>
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}

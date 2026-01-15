@@ -1,38 +1,26 @@
-import React, { useContext, useEffect, useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
-import { ThemeContext } from "../context/ThemeContext";
-import { Link } from "react-router-dom";
-import "../styles/Home.css";
 
-const Home = () => {
+const products = [
+  { id: 1, name: "Phone", price: 300 },
+  { id: 2, name: "Laptop", price: 900 },
+  { id: 3, name: "Headphones", price: 120 },
+];
+
+export default function Home() {
   const { addToCart } = useContext(CartContext);
-  const { theme } = useContext(ThemeContext);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    fetch("https://fakestoreapi.com/products?limit=6")
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error fetching products:", err));
-  }, []);
 
   return (
-    <div className={`home ${theme}`}>
-      <h1>Welcome to Our Store</h1>
-      <div className="products-grid">
-        {products.map((product) => (
-          <div key={product.id} className="product-card">
-            <Link to={`/products/${product.id}`}>
-              <img src={product.image} alt={product.title} className="product-image"/>
-              <h3>{product.title}</h3>
-            </Link>
-            <p>${product.price}</p>
-            <button onClick={() => addToCart(product)}>Add to Cart</button>
+    <div className="container mt-4">
+      <h2>Featured Products</h2>
+      <div className="row">
+        {products.map(p => (
+          <div className="col-md-4 mb-3" key={p.id}>
+            <ProductCard product={p} addToCart={addToCart} />
           </div>
         ))}
       </div>
     </div>
   );
-};
-
-export default Home;
+}
