@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # Creating the database location
-SQLALCHEMY_DATABASE_URL = 'sqlite:///./todosapp.db'
+SQLALCHEMY_DATABASE_URL = 'sqlite:///./shopapp.db'
 
 # The Engine: The entry point to the database.
 # 'connect_args={"check_same_thread": False}' is specific to SQLite. 
