@@ -19,6 +19,9 @@ SHOPPING CART
     * pip install bcrypt==4.0.1
 7. Returns the secret key 
     openssl rand -hex 32
+8. pip install pymysql
+9. pip install alembic
+10. alembic init alembic
 
 # Running the application
 3. To run the application 
