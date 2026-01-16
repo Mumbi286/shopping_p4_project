@@ -5,8 +5,6 @@ SHOPPING CART
 # Features
 
 # Installation requirement for this project
-- pipenv install
-- pipenv shell
 
 # Technologies used 
 - * Frontend:
