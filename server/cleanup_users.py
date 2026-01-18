@@ -31,10 +31,10 @@ try:
         # Delete each user
         for user in users_to_delete:
             db.delete(user)
-            print(f"✓ Deleted user: {user.username} ({user.email})")
+            print(f" Deleted user: {user.username} ({user.email})")
         
         db.commit()
-        print(f"\n✓ Successfully deleted {len(users_to_delete)} user(s)!")
+        print(f"\n Successfully deleted {len(users_to_delete)} user(s)!")
         
         # Show remaining users
         remaining = db.query(User).all()
