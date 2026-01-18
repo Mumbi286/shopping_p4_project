@@ -187,8 +187,5 @@ lsof -ti:3000 | xargs kill -9
 
 ---
 
-## Additional Resources
 
-- FastAPI Docs: http://localhost:8000/docs
-- React App: http://localhost:3000
-- Database: `server/shopapp.db` (SQLite)
+
