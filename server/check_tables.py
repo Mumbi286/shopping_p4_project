@@ -37,15 +37,15 @@ print("=" * 60)
 missing_tables = []
 for table in expected_tables:
     if table in tables:
-        print(f"✓ {table} - EXISTS")
+        print(f" {table} - EXISTS")
     else:
-        print(f"✗ {table} - MISSING")
+        print(f"{table} - MISSING")
         missing_tables.append(table)
 
 if missing_tables:
-    print(f"\n⚠ WARNING: {len(missing_tables)} table(s) are missing!")
+    print(f"\n WARNING: {len(missing_tables)} table(s) are missing!")
 else:
-    print("\n✓ All expected tables exist!")
+    print("\n All expected tables exist!")
 
 print("\n" + "=" * 60)
 print("\nTo view table structure, use:")

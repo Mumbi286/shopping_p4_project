@@ -52,7 +52,7 @@ def create_user(username, email, first_name, last_name, password):
         return True
         
     except Exception as e:
-        print(f"✗ Error creating user: {e}")
+        print(f" Error creating user: {e}")
         db.rollback()
         return False
     finally:
