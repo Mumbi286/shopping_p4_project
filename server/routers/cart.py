@@ -78,6 +78,13 @@ def add_to_cart(request: AddCartItemRequest, db: Session = Depends(get_db),user:
     product = db.query(Product).filter(Product.id == request.product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
+    
+    # Check if product is in stock
+    if (product.stock_quantity or 0) <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Product is out of stock"
+        )
 
     # Check if item already in cart
     cart_item = (
@@ -85,9 +92,23 @@ def add_to_cart(request: AddCartItemRequest, db: Session = Depends(get_db),user:
         .filter(CartItem.cart_id == cart.id, CartItem.product_id == request.product_id)
         .first()
     )
+    
+    # Calculate new quantity
+    new_quantity = request.quantity
+    if cart_item:
+        new_quantity = cart_item.quantity + request.quantity
+    
+    # Validate stock availability
+    if new_quantity > (product.stock_quantity or 0):
+        available = product.stock_quantity or 0
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Not enough stock. Only {available} item(s) available. You already have {cart_item.quantity if cart_item else 0} in cart."
+        )
+    
     if cart_item:
         # Increase quantity
-        cart_item.quantity += request.quantity
+        cart_item.quantity = new_quantity
     else:
         cart_item = CartItem(cart_id=cart.id, product_id=product.id, quantity=request.quantity)
         db.add(cart_item)
@@ -100,8 +121,8 @@ def add_to_cart(request: AddCartItemRequest, db: Session = Depends(get_db),user:
 
 @router.put("/update/{item_id}", status_code=status.HTTP_200_OK)
 def update_cart_item(
+    request: UpdateCartItemRequest,
     item_id: int = Path(gt=0),
-    request: UpdateCartItemRequest = None,
     db: Session = Depends(get_db),
     user: dict = Depends(get_current_user)
 ):
@@ -115,6 +136,18 @@ def update_cart_item(
     )
     if not cart_item:
         raise HTTPException(status_code=404, detail="Cart item not found")
+
+    # Get product to check stock
+    product = db.query(Product).filter(Product.id == cart_item.product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    
+    # Validate stock availability
+    if request.quantity > (product.stock_quantity or 0):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Not enough stock. Only {product.stock_quantity or 0} item(s) available."
+        )
 
     cart_item.quantity = request.quantity
     db.commit()

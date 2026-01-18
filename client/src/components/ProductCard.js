@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-// Removed old CSS import since we're using Bootstrap
-// import "./ProductCard.css";
+import { formatPrice } from "../utils/priceFormatter";
 
 const ProductCard = ({ product, children }) => {
   return (
@@ -14,7 +13,7 @@ const ProductCard = ({ product, children }) => {
       />
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{product.name}</h5>
-        <p className="card-text">${product.price.toFixed(2)}</p>
+        <p className="card-text">{formatPrice(product.price)}</p>
         <div className="mt-auto">{children}</div>
       </div>
     </div>

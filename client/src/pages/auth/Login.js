@@ -1,34 +1,39 @@
 // client/src/pages/auth/Login.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Form, Button, Alert } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    // Example simple validation
-    if (!form.email || !form.password) {
-      setError("Please enter email and password");
+    if (!form.username || !form.password) {
+      setError("Please enter username and password");
+      setLoading(false);
       return;
     }
 
-    // Simulate backend login (replace with API call when ready)
-    const fakeUser = { name: "John Doe", email: form.email };
-    login(fakeUser);
-
-    // Redirect after login
-    navigate("/");
+    try {
+      await login(form.username, form.password);
+      navigate("/");
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -37,13 +42,13 @@ const Login = () => {
         <h2>Login</h2>
         {error && <Alert variant="danger">{error}</Alert>}
         <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
+          <Form.Label>Username</Form.Label>
           <Form.Control
-            type="email"
-            name="email"
-            value={form.email}
+            type="text"
+            name="username"
+            value={form.username}
             onChange={handleChange}
-            placeholder="Enter email"
+            placeholder="Enter username"
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -56,9 +61,19 @@ const Login = () => {
             placeholder="Password"
           />
         </Form.Group>
-        <Button type="submit" variant="primary" className="w-100">
-          Login
+        <Button
+          type="submit"
+          variant="primary"
+          className="w-100"
+          disabled={loading}
+        >
+          {loading ? "Logging in..." : "Login"}
         </Button>
+        <div className="mt-3 text-center">
+          <p>
+            Don't have an account? <Link to="/register">Register here</Link>
+          </p>
+        </div>
       </Form>
     </div>
   );

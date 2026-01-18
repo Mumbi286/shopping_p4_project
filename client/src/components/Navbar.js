@@ -6,8 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import { Navbar as BSNavbar, Nav, Container, Badge } from "react-bootstrap";
 
 const AppNavbar = () => {
-  const { cartItems } = useCart();
-  const { user, logout } = useAuth();
+  const { cartItemCount } = useCart();
+  const { user, logout, loading } = useAuth();
 
   return (
     <BSNavbar bg="dark" variant="dark" expand="lg">
@@ -19,17 +19,24 @@ const AppNavbar = () => {
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/products">Products</Nav.Link>
             <Nav.Link as={Link} to="/cart">
-              Cart {cartItems.length > 0 && <Badge bg="light" text="dark">{cartItems.length}</Badge>}
+               Cart {cartItemCount > 0 && <Badge bg="warning" text="dark">{cartItemCount}</Badge>}
             </Nav.Link>
           </Nav>
           <Nav>
-            {user ? (
+            {!loading && (
               <>
-                <Nav.Link disabled>Hello, {user.name}</Nav.Link>
-                <Nav.Link onClick={logout}>Logout</Nav.Link>
+                {user ? (
+                  <>
+                    <Nav.Link disabled>Hello, {user.username}</Nav.Link>
+                    <Nav.Link onClick={logout}>Logout</Nav.Link>
+                  </>
+                ) : (
+                  <>
+                    <Nav.Link as={Link} to="/auth/login">Login</Nav.Link>
+                    <Nav.Link as={Link} to="/auth/register">Register</Nav.Link>
+                  </>
+                )}
               </>
-            ) : (
-              <Nav.Link as={Link} to="/login">Login</Nav.Link>
             )}
           </Nav>
         </BSNavbar.Collapse>

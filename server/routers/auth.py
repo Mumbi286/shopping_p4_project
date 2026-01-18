@@ -89,6 +89,25 @@ def create_user(
     create_user_request: CreateUserRequest,
     db: Session = Depends(get_db)
 ):
+    # Check if user with same username already exists
+    existing_user = db.query(User).filter(
+        (User.username == create_user_request.username) | 
+        (User.email == create_user_request.email)
+    ).first()
+    
+    if existing_user:
+        if existing_user.username == create_user_request.username:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Username '{create_user_request.username}' is already taken. Please choose a different username."
+            )
+        if existing_user.email == create_user_request.email:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Email '{create_user_request.email}' is already registered. Please use a different email."
+            )
+    
+    # Create new user
     user = User(
         email=create_user_request.email,
         username=create_user_request.username,
@@ -96,10 +115,23 @@ def create_user(
         last_name=create_user_request.last_name,
         hashed_password=bcrypt_context.hash(create_user_request.password)
     )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return {"message": "User created successfully", "user_id": user.id}
+    
+    try:
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return {
+            "message": "User created successfully", 
+            "user_id": user.id,
+            "username": user.username,
+            "email": user.email
+        }
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create user: {str(e)}"
+        )
 
 
 @router.post("/token", response_model=Token)
