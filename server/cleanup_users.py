@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-remove unwanted users from the database
-Removes users with 'james' in email and username 'string'
-"""
 from sqlalchemy.orm import Session
 from database import SessionLocal
 from models import User
