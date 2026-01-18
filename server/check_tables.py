@@ -24,11 +24,11 @@ for table in sorted(tables):
         with engine.connect() as conn:
             result = conn.execute(text("SELECT version_num FROM alembic_version"))
             version = result.fetchone()
-            print(f"✓ {table:<20} (Alembic version: {version[0] if version else 'None'})")
+            print(f" {table:<20} (Alembic version: {version[0] if version else 'None'})")
     else:
         # Get column info for each table
         columns = inspector.get_columns(table)
-        print(f"✓ {table:<20} ({len(columns)} columns)")
+        print(f" {table:<20} ({len(columns)} columns)")
 
 print("\n" + "=" * 60)
 print("EXPECTED TABLES STATUS")
